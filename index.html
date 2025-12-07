@@ -3,212 +3,802 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>🌱 AgriMate Zambia - Farming Weather App</title>
-    <link rel="manifest" href="manifest.json">
+    <title>AgriMate Zambia Pro - AI Farming Assistant</title>
+    
+    <!-- PWA Configuration -->
+    <link rel="manifest" href="/manifest.json">
+    <meta name="theme-color" content="#2E7D32">
+    
+    <!-- Fonts & Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800;900&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    
     <style>
+        /* ========== CSS VARIABLES ========== */
+        :root {
+            --primary: #2E7D32;
+            --primary-dark: #1B5E20;
+            --primary-light: #C8E6C9;
+            --secondary: #FF9800;
+            --secondary-dark: #F57C00;
+            --accent: #2196F3;
+            --danger: #F44336;
+            --success: #4CAF50;
+            --warning: #FFC107;
+            --dark: #263238;
+            --light: #F5F7FA;
+            --white: #FFFFFF;
+            --gray: #78909C;
+            
+            --shadow-sm: 0 2px 8px rgba(0,0,0,0.08);
+            --shadow-md: 0 4px 16px rgba(0,0,0,0.12);
+            --shadow-lg: 0 8px 32px rgba(0,0,0,0.16);
+            --shadow-xl: 0 12px 48px rgba(0,0,0,0.20);
+            
+            --radius-sm: 12px;
+            --radius-md: 16px;
+            --radius-lg: 24px;
+            --radius-xl: 32px;
+            
+            --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        
+        /* ========== DARK MODE VARIABLES ========== */
+        [data-theme="dark"] {
+            --primary: #4CAF50;
+            --primary-dark: #388E3C;
+            --primary-light: #1B5E20;
+            --dark: #FFFFFF;
+            --light: #263238;
+            --white: #37474F;
+            --gray: #B0BEC5;
+        }
+        
         /* ========== BASE STYLES ========== */
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, sans-serif;
+        }
+        
+        html {
+            scroll-behavior: smooth;
         }
         
         body {
-            background: linear-gradient(135deg, #e8f5e9 0%, #c8e6c9 100%);
+            font-family: 'Inter', sans-serif;
+            background: linear-gradient(135deg, #f0f7f0 0%, #e8f5e9 100%);
+            color: var(--dark);
+            line-height: 1.6;
             min-height: 100vh;
-            color: #2E7D32;
-            padding: 15px;
+            transition: var(--transition);
+        }
+        
+        [data-theme="dark"] body {
+            background: linear-gradient(135deg, #263238 0%, #37474F 100%);
         }
         
         .app-container {
             max-width: 100%;
-            margin: 0 auto;
-            background: white;
-            border-radius: 20px;
-            overflow: hidden;
-            box-shadow: 0 10px 30px rgba(0, 100, 0, 0.15);
+            min-height: 100vh;
+            position: relative;
+            overflow-x: hidden;
         }
         
-        /* ========== HEADER ========== */
+        /* ========== HEADER & NAVBAR ========== */
         .app-header {
-            background: linear-gradient(90deg, #1b5e20, #2e7d32, #388e3c);
-            color: white;
-            padding: 25px 20px;
-            text-align: center;
+            background: linear-gradient(135deg, var(--primary-dark), var(--primary));
+            color: var(--white);
+            padding: 20px;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            box-shadow: var(--shadow-md);
+        }
+        
+        .navbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 20px;
+        }
+        
+        .logo-section {
+            display: flex;
+            align-items: center;
+            gap: 15px;
         }
         
         .logo {
-            font-size: 3em;
-            margin-bottom: 10px;
-        }
-        
-        .app-title {
-            font-size: 1.8em;
-            font-weight: 800;
-            margin-bottom: 8px;
-        }
-        
-        .app-subtitle {
-            opacity: 0.9;
-            font-size: 1em;
-        }
-        
-        .zambia-badge {
-            background: #ffde00;
-            color: #1b5e20;
-            padding: 5px 15px;
-            border-radius: 20px;
-            font-weight: bold;
-            display: inline-block;
-            margin-top: 10px;
-            font-size: 0.9em;
-        }
-        
-        /* ========== CONTROLS ========== */
-        .controls-section {
-            padding: 20px;
-            background: #f8fdf8;
-            border-bottom: 1px solid #e0e0e0;
-        }
-        
-        .location-select {
-            width: 100%;
-            padding: 15px;
-            border: 2px solid #4CAF50;
-            border-radius: 12px;
-            font-size: 1.1em;
-            font-weight: 600;
-            color: #2E7D32;
-            background: #f1f8e9;
-            margin-bottom: 15px;
-        }
-        
-        .refresh-btn {
-            width: 100%;
-            padding: 16px;
-            background: linear-gradient(90deg, #4CAF50, #2E7D32);
-            color: white;
-            border: none;
-            border-radius: 12px;
-            font-size: 1.1em;
-            font-weight: 600;
-            cursor: pointer;
+            width: 50px;
+            height: 50px;
+            background: var(--white);
+            border-radius: 50%;
             display: flex;
             align-items: center;
             justify-content: center;
-            gap: 10px;
+            font-size: 1.8rem;
+            color: var(--primary);
+            box-shadow: var(--shadow-md);
         }
         
-        /* ========== WEATHER DISPLAY ========== */
-        .current-section {
-            padding: 25px;
-            background: linear-gradient(135deg, #e3f2fd, #bbdefb);
-            margin: 15px;
-            border-radius: 18px;
+        .app-title h1 {
+            font-family: 'Poppins', sans-serif;
+            font-weight: 800;
+            font-size: 1.5rem;
+            line-height: 1.2;
         }
         
-        .location-name {
-            font-size: 1.4em;
-            font-weight: 700;
-            color: #1976D2;
-            margin-bottom: 10px;
+        .app-title span {
+            font-weight: 400;
+            font-size: 0.9rem;
+            opacity: 0.9;
         }
         
-        .weather-main {
+        .controls-section {
             display: flex;
             align-items: center;
-            gap: 20px;
-            margin-top: 20px;
+            gap: 15px;
+        }
+        
+        /* ========== LANGUAGE SWITCHER ========== */
+        .language-switcher {
+            position: relative;
+        }
+        
+        .lang-btn {
+            background: rgba(255, 255, 255, 0.15);
+            backdrop-filter: blur(10px);
+            border: 2px solid rgba(255, 255, 255, 0.2);
+            color: var(--white);
+            padding: 10px 20px;
+            border-radius: var(--radius-sm);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: var(--transition);
+        }
+        
+        .lang-btn:hover {
+            background: rgba(255, 255, 255, 0.25);
+            transform: translateY(-2px);
+        }
+        
+        .lang-dropdown {
+            position: absolute;
+            top: 100%;
+            right: 0;
+            background: var(--white);
+            border-radius: var(--radius-sm);
+            box-shadow: var(--shadow-xl);
+            min-width: 200px;
+            display: none;
+            z-index: 1000;
+        }
+        
+        .lang-dropdown.show {
+            display: block;
+            animation: slideDown 0.3s ease;
+        }
+        
+        @keyframes slideDown {
+            from {
+                opacity: 0;
+                transform: translateY(-10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        .lang-option {
+            padding: 15px 20px;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            cursor: pointer;
+            transition: var(--transition);
+            border-bottom: 1px solid rgba(0,0,0,0.05);
+            color: var(--dark);
+        }
+        
+        .lang-option:hover {
+            background: var(--primary-light);
+        }
+        
+        .lang-option.active {
+            background: var(--primary-light);
+            color: var(--primary-dark);
+            font-weight: 600;
+        }
+        
+        /* ========== THEME SWITCHER ========== */
+        .theme-switch {
+            position: relative;
+            width: 60px;
+            height: 30px;
+        }
+        
+        .theme-checkbox {
+            display: none;
+        }
+        
+        .theme-label {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 60px;
+            height: 30px;
+            background: rgba(255, 255, 255, 0.15);
+            border-radius: 15px;
+            cursor: pointer;
+            transition: var(--transition);
+            display: flex;
+            align-items: center;
+            padding: 0 5px;
+        }
+        
+        .theme-label::after {
+            content: '';
+            position: absolute;
+            width: 24px;
+            height: 24px;
+            background: var(--white);
+            border-radius: 50%;
+            transition: var(--transition);
+            left: 3px;
+        }
+        
+        .theme-checkbox:checked + .theme-label {
+            background: rgba(255, 255, 255, 0.25);
+        }
+        
+        .theme-checkbox:checked + .theme-label::after {
+            transform: translateX(30px);
+        }
+        
+        .theme-icon {
+            position: absolute;
+            color: var(--white);
+            font-size: 0.8rem;
+            z-index: 1;
+        }
+        
+        .sun-icon {
+            left: 8px;
+        }
+        
+        .moon-icon {
+            right: 8px;
+        }
+        
+        /* ========== MAIN CONTENT ========== */
+        .main-content {
+            padding: 25px;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+        
+        /* ========== WEATHER DASHBOARD ========== */
+        .weather-dashboard {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 25px;
+            margin-bottom: 30px;
+        }
+        
+        @media (max-width: 1024px) {
+            .weather-dashboard {
+                grid-template-columns: 1fr;
+            }
+        }
+        
+        .weather-card {
+            background: var(--white);
+            border-radius: var(--radius-lg);
+            padding: 30px;
+            box-shadow: var(--shadow-lg);
+            transition: var(--transition);
+            border: 1px solid rgba(0,0,0,0.05);
+        }
+        
+        [data-theme="dark"] .weather-card {
+            background: var(--white);
+            border-color: rgba(255,255,255,0.1);
+        }
+        
+        .weather-card:hover {
+            transform: translateY(-5px);
+            box-shadow: var(--shadow-xl);
+        }
+        
+        .card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 25px;
+        }
+        
+        .card-title {
+            font-family: 'Poppins', sans-serif;
+            font-weight: 700;
+            font-size: 1.4rem;
+            color: var(--primary-dark);
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        
+        [data-theme="dark"] .card-title {
+            color: var(--primary);
+        }
+        
+        .location-selector {
+            padding: 12px 20px;
+            border: 2px solid var(--primary);
+            border-radius: var(--radius-sm);
+            background: var(--white);
+            color: var(--dark);
+            font-weight: 600;
+            min-width: 200px;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+        
+        .location-selector:focus {
+            outline: none;
+            box-shadow: 0 0 0 3px rgba(46, 125, 50, 0.2);
+        }
+        
+        /* ========== CURRENT WEATHER ========== */
+        .current-weather {
+            text-align: center;
         }
         
         .temp-display {
-            text-align: center;
-            min-width: 120px;
+            margin: 30px 0;
         }
         
         .temp-value {
-            font-size: 4em;
+            font-size: 5rem;
             font-weight: 900;
-            color: #d32f2f;
+            color: var(--accent);
+            line-height: 1;
+            background: linear-gradient(135deg, var(--accent), #1976D2);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
         }
         
-        .weather-details {
-            flex: 1;
+        .weather-status {
+            font-size: 1.3rem;
+            font-weight: 600;
+            color: var(--gray);
+            margin-top: 10px;
         }
         
-        .details-grid {
+        .weather-stats {
             display: grid;
             grid-template-columns: repeat(2, 1fr);
-            gap: 12px;
-            margin-top: 15px;
+            gap: 15px;
+            margin-top: 30px;
         }
         
-        .detail-card {
-            background: rgba(255, 255, 255, 0.95);
-            padding: 15px;
-            border-radius: 12px;
-            text-align: center;
-        }
-        
-        /* ========== ADVICE SECTION ========== */
-        .advice-section {
+        .stat-item {
+            background: var(--light);
             padding: 20px;
-            margin: 15px;
-            background: linear-gradient(135deg, #fff3e0, #ffe0b2);
-            border-radius: 18px;
+            border-radius: var(--radius-md);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+        
+        .stat-info {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        
+        .stat-icon {
+            width: 40px;
+            height: 40px;
+            background: var(--primary-light);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2rem;
+            color: var(--primary);
+        }
+        
+        .stat-label {
+            font-size: 0.9rem;
+            color: var(--gray);
+        }
+        
+        .stat-value {
+            font-weight: 700;
+            font-size: 1.2rem;
+            color: var(--dark);
+        }
+        
+        /* ========== FORECAST ========== */
+        .forecast-container {
+            overflow-x: auto;
+            margin-top: 20px;
+        }
+        
+        .forecast-grid {
+            display: flex;
+            gap: 15px;
+            padding: 10px 0;
+        }
+        
+        .forecast-card {
+            min-width: 120px;
+            background: var(--light);
+            padding: 20px;
+            border-radius: var(--radius-md);
+            text-align: center;
+            flex-shrink: 0;
+        }
+        
+        .forecast-time {
+            font-weight: 600;
+            margin-bottom: 10px;
+            color: var(--gray);
+        }
+        
+        .forecast-icon {
+            font-size: 2rem;
+            margin: 10px 0;
+        }
+        
+        .forecast-temp {
+            font-weight: 700;
+            font-size: 1.3rem;
+            color: var(--dark);
+        }
+        
+        /* ========== AI ADVICE SECTION ========== */
+        .ai-advice-section {
+            background: linear-gradient(135deg, #FFF3E0, #FFECB3);
+            border-radius: var(--radius-lg);
+            padding: 30px;
+            margin-bottom: 30px;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        [data-theme="dark"] .ai-advice-section {
+            background: linear-gradient(135deg, #5D4037, #3E2723);
+        }
+        
+        .ai-advice-section::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 5px;
+            background: linear-gradient(90deg, #FF9800, #FF5722);
+        }
+        
+        .ai-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 25px;
+        }
+        
+        .ai-title {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+        
+        .ai-icon {
+            width: 50px;
+            height: 50px;
+            background: var(--white);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            color: #FF9800;
+            box-shadow: var(--shadow-md);
         }
         
         .advice-content {
-            background: white;
+            background: var(--white);
+            border-radius: var(--radius-md);
+            padding: 30px;
+            min-height: 200px;
+            margin-bottom: 25px;
+            position: relative;
+        }
+        
+        .advice-tabs {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+            border-bottom: 2px solid var(--light);
+            padding-bottom: 15px;
+        }
+        
+        .advice-tab {
+            padding: 12px 24px;
+            background: none;
+            border: none;
+            border-radius: var(--radius-sm);
+            font-weight: 600;
+            cursor: pointer;
+            transition: var(--transition);
+            color: var(--gray);
+        }
+        
+        .advice-tab.active {
+            background: var(--primary);
+            color: var(--white);
+        }
+        
+        .advice-category {
+            background: var(--primary-light);
             padding: 20px;
-            border-radius: 12px;
-            min-height: 150px;
+            border-radius: var(--radius-md);
             margin-bottom: 20px;
         }
         
-        .advice-btn {
-            width: 100%;
-            padding: 16px;
-            background: linear-gradient(90deg, #388E3C, #2E7D32);
-            color: white;
-            border: none;
-            border-radius: 12px;
-            font-size: 1.1em;
-            font-weight: 600;
-            cursor: pointer;
+        .category-title {
+            font-weight: 700;
+            color: var(--primary-dark);
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
         }
         
-        /* ========== FEATURES ========== */
+        .recommendation-list {
+            display: grid;
+            gap: 12px;
+        }
+        
+        .recommendation-item {
+            display: flex;
+            align-items: flex-start;
+            gap: 12px;
+            padding: 12px;
+            background: rgba(255,255,255,0.8);
+            border-radius: var(--radius-sm);
+        }
+        
+        /* ========== FEATURES GRID ========== */
         .features-section {
-            padding: 20px;
-            margin: 15px;
+            margin-bottom: 40px;
+        }
+        
+        .section-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+        }
+        
+        .section-title {
+            font-family: 'Poppins', sans-serif;
+            font-size: 1.8rem;
+            font-weight: 800;
+            color: var(--primary-dark);
+        }
+        
+        [data-theme="dark"] .section-title {
+            color: var(--primary);
         }
         
         .features-grid {
             display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 15px;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 25px;
         }
         
         .feature-card {
-            background: white;
-            padding: 20px;
-            border-radius: 15px;
-            text-align: center;
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.08);
-            cursor: pointer;
-            border: 2px solid #e8f5e9;
+            background: var(--white);
+            border-radius: var(--radius-lg);
+            padding: 30px;
+            box-shadow: var(--shadow-lg);
+            transition: var(--transition);
+            border: 2px solid transparent;
+            position: relative;
+            overflow: hidden;
         }
         
-        /* ========== RESPONSIVE ========== */
-        @media (max-width: 480px) {
-            .weather-main {
+        .feature-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 5px;
+            background: linear-gradient(90deg, var(--primary), var(--accent));
+        }
+        
+        .feature-card:hover {
+            transform: translateY(-10px);
+            border-color: var(--primary);
+            box-shadow: var(--shadow-xl);
+        }
+        
+        .feature-header {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            margin-bottom: 20px;
+        }
+        
+        .feature-icon {
+            width: 60px;
+            height: 60px;
+            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+            border-radius: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.8rem;
+            color: var(--white);
+        }
+        
+        .feature-title {
+            font-family: 'Poppins', sans-serif;
+            font-weight: 700;
+            font-size: 1.3rem;
+            color: var(--dark);
+        }
+        
+        .feature-desc {
+            color: var(--gray);
+            margin-bottom: 25px;
+            line-height: 1.7;
+        }
+        
+        .feature-badge {
+            display: inline-block;
+            padding: 8px 16px;
+            background: var(--primary-light);
+            color: var(--primary-dark);
+            border-radius: 20px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            margin-bottom: 15px;
+        }
+        
+        /* ========== BOTTOM NAVIGATION ========== */
+        .bottom-nav {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: var(--white);
+            box-shadow: 0 -4px 20px rgba(0,0,0,0.1);
+            z-index: 1000;
+            padding: 15px 25px;
+        }
+        
+        .nav-grid {
+            display: grid;
+            grid-template-columns: repeat(5, 1fr);
+            gap: 10px;
+        }
+        
+        .nav-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 8px;
+            text-decoration: none;
+            color: var(--gray);
+            transition: var(--transition);
+            padding: 10px;
+            border-radius: var(--radius-sm);
+        }
+        
+        .nav-item.active {
+            color: var(--primary);
+            background: var(--primary-light);
+        }
+        
+        .nav-icon {
+            font-size: 1.5rem;
+        }
+        
+        .nav-label {
+            font-size: 0.8rem;
+            font-weight: 600;
+        }
+        
+        /* ========== LOADING & MODALS ========== */
+        .loading-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(255,255,255,0.95);
+            display: none;
+            justify-content: center;
+            align-items: center;
+            z-index: 9999;
+            backdrop-filter: blur(10px);
+        }
+        
+        .loading-overlay.show {
+            display: flex;
+        }
+        
+        .loader {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            background: conic-gradient(from 0deg, var(--primary), var(--accent), var(--primary));
+            animation: spin 1s linear infinite;
+            position: relative;
+        }
+        
+        .loader::after {
+            content: '';
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            right: 10px;
+            bottom: 10px;
+            background: white;
+            border-radius: 50%;
+        }
+        
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        
+        .notification {
+            position: fixed;
+            bottom: 100px;
+            right: 25px;
+            background: var(--primary);
+            color: white;
+            padding: 20px;
+            border-radius: var(--radius-md);
+            box-shadow: var(--shadow-xl);
+            max-width: 350px;
+            transform: translateX(150%);
+            transition: transform 0.5s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+            z-index: 9999;
+        }
+        
+        .notification.show {
+            transform: translateX(0);
+        }
+        
+        /* ========== RESPONSIVE DESIGN ========== */
+        @media (max-width: 768px) {
+            .navbar {
                 flex-direction: column;
-                text-align: center;
+                gap: 15px;
             }
             
-            .details-grid {
+            .controls-section {
+                width: 100%;
+                justify-content: space-between;
+            }
+            
+            .main-content {
+                padding: 20px 15px;
+            }
+            
+            .weather-stats {
                 grid-template-columns: 1fr;
             }
             
@@ -216,214 +806,1006 @@
                 grid-template-columns: 1fr;
             }
             
-            .temp-value {
-                font-size: 3.5em;
+            .bottom-nav {
+                padding: 10px 15px;
             }
+            
+            .nav-label {
+                display: none;
+            }
+            
+            .nav-grid {
+                gap: 5px;
+            }
+        }
+        
+        /* ========== ANIMATIONS ========== */
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        .fade-in {
+            animation: fadeIn 0.6s ease forwards;
         }
     </style>
 </head>
 <body>
     <div class="app-container">
-        <!-- HEADER -->
-        <header class="app-header">
-            <div class="logo">🌱</div>
-            <h1 class="app-title">AgriMate Zambia</h1>
-            <p class="app-subtitle">AI Farming Weather Assistant</p>
-            <div class="zambia-badge">🇿🇲 MADE FOR ZAMBIAN FARMERS</div>
-        </header>
-        
-        <!-- CONTROLS -->
-        <div class="controls-section">
-            <select class="location-select" id="locationSelect">
-                <option value="Lusaka">📍 Lusaka (Capital)</option>
-                <option value="Ndola">📍 Ndola (Copperbelt)</option>
-                <option value="Kitwe">📍 Kitwe</option>
-                <option value="Livingstone">📍 Livingstone</option>
-                <option value="Chipata">📍 Chipata (Eastern)</option>
-                <option value="Solwezi">📍 Solwezi</option>
-                <option value="Mongu">📍 Mongu (Western)</option>
-                <option value="Kasama">📍 Kasama (Northern)</option>
-            </select>
-            
-            <button class="refresh-btn" onclick="getWeather()">
-                🔄 Get Weather & Advice
-            </button>
+        <!-- Loading Overlay -->
+        <div class="loading-overlay" id="loading">
+            <div class="loader"></div>
         </div>
         
-        <!-- WEATHER DISPLAY -->
-        <div class="current-section">
-            <div class="location-name" id="locationName">Lusaka, Zambia</div>
-            
-            <div class="weather-main">
-                <div class="temp-display">
-                    <div class="temp-value" id="currentTemp">26</div>
-                    <div style="color: #666; margin-top: 5px;">°C</div>
+        <!-- Notification -->
+        <div class="notification" id="notification">
+            <div id="notificationMessage">Welcome to AgriMate Zambia Pro!</div>
+        </div>
+        
+        <!-- Header -->
+        <header class="app-header">
+            <div class="navbar">
+                <div class="logo-section">
+                    <div class="logo">🌱</div>
+                    <div class="app-title">
+                        <h1 data-lang="appTitle">AgriMate Zambia Pro</h1>
+                        <span data-lang="appSubtitle">AI-Powered Smart Farming</span>
+                    </div>
                 </div>
                 
-                <div class="weather-details">
-                    <div style="font-weight: bold; margin-bottom: 15px;" id="weatherCondition">Sunny</div>
+                <div class="controls-section">
+                    <!-- Language Switcher -->
+                    <div class="language-switcher">
+                        <button class="lang-btn" onclick="toggleLanguageDropdown()">
+                            <span class="current-lang" id="currentLang">English</span>
+                            <i class="fas fa-chevron-down"></i>
+                        </button>
+                        <div class="lang-dropdown" id="languageDropdown">
+                            <div class="lang-option active" onclick="changeLanguage('en')">
+                                <span class="flag">🇬🇧</span>
+                                <span class="lang-name">English</span>
+                            </div>
+                            <div class="lang-option" onclick="changeLanguage('bem')">
+                                <span class="flag">🇿🇲</span>
+                                <span class="lang-name">Bemba (Ichibemba)</span>
+                            </div>
+                            <div class="lang-option" onclick="changeLanguage('nya')">
+                                <span class="flag">🇿🇲</span>
+                                <span class="lang-name">Nyanja (Chichewa)</span>
+                            </div>
+                        </div>
+                    </div>
                     
-                    <div class="details-grid">
-                        <div class="detail-card">
-                            <div style="color: #555; margin-bottom: 5px;">💧 Humidity</div>
-                            <div style="font-weight: bold; color: #1976D2;" id="humidity">65%</div>
+                    <!-- Theme Switcher -->
+                    <div class="theme-switch">
+                        <input type="checkbox" id="themeSwitch" class="theme-checkbox" onchange="toggleTheme()">
+                        <label for="themeSwitch" class="theme-label">
+                            <i class="fas fa-sun theme-icon sun-icon"></i>
+                            <i class="fas fa-moon theme-icon moon-icon"></i>
+                        </label>
+                    </div>
+                </div>
+            </div>
+        </header>
+        
+        <!-- Main Content -->
+        <main class="main-content">
+            <!-- Weather Dashboard -->
+            <div class="weather-dashboard">
+                <!-- Current Weather -->
+                <div class="weather-card current-weather fade-in">
+                    <div class="card-header">
+                        <h2 class="card-title">
+                            <i class="fas fa-sun"></i>
+                            <span data-lang="currentWeather">Current Weather</span>
+                        </h2>
+                        <select class="location-selector" id="locationSelect" onchange="updateWeather()">
+                            <option value="Lusaka" data-lang="lusaka">📍 Lusaka (Capital)</option>
+                            <option value="Ndola" data-lang="ndola">📍 Ndola (Copperbelt)</option>
+                            <option value="Kitwe" data-lang="kitwe">📍 Kitwe</option>
+                            <option value="Livingstone" data-lang="livingstone">📍 Livingstone</option>
+                            <option value="Chipata" data-lang="chipata">📍 Chipata (Eastern)</option>
+                            <option value="Solwezi" data-lang="solwezi">📍 Solwezi</option>
+                            <option value="Mongu" data-lang="mongu">📍 Mongu (Western)</option>
+                            <option value="Kasama" data-lang="kasama">📍 Kasama (Northern)</option>
+                        </select>
+                    </div>
+                    
+                    <div class="temp-display">
+                        <div class="temp-value" id="currentTemp">26</div>
+                        <div class="weather-status">
+                            <span id="weatherCondition">Sunny</span>
+                            <span> • </span>
+                            <span data-lang="feelsLike">Feels like</span>
+                            <span id="feelsLike">28°C</span>
                         </div>
-                        <div class="detail-card">
-                            <div style="color: #555; margin-bottom: 5px;">💨 Wind</div>
-                            <div style="font-weight: bold; color: #1976D2;" id="windSpeed">12 km/h</div>
+                    </div>
+                    
+                    <div class="weather-stats">
+                        <div class="stat-item">
+                            <div class="stat-info">
+                                <div class="stat-icon">💧</div>
+                                <div>
+                                    <div class="stat-label" data-lang="humidity">Humidity</div>
+                                    <div class="stat-value" id="humidity">65%</div>
+                                </div>
+                            </div>
                         </div>
-                        <div class="detail-card">
-                            <div style="color: #555; margin-bottom: 5px;">🌧️ Rain</div>
-                            <div style="font-weight: bold; color: #1976D2;" id="rainfall">0 mm</div>
+                        <div class="stat-item">
+                            <div class="stat-info">
+                                <div class="stat-icon">💨</div>
+                                <div>
+                                    <div class="stat-label" data-lang="wind">Wind</div>
+                                    <div class="stat-value" id="windSpeed">12 km/h</div>
+                                </div>
+                            </div>
                         </div>
-                        <div class="detail-card">
-                            <div style="color: #555; margin-bottom: 5px;">🌡️ Feels</div>
-                            <div style="font-weight: bold; color: #1976D2;" id="feelsLike">27°C</div>
+                        <div class="stat-item">
+                            <div class="stat-info">
+                                <div class="stat-icon">🌧️</div>
+                                <div>
+                                    <div class="stat-label" data-lang="rainfall">Rainfall</div>
+                                    <div class="stat-value" id="rainfall">0 mm</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-info">
+                                <div class="stat-icon">🌡️</div>
+                                <div>
+                                    <div class="stat-label" data-lang="pressure">Pressure</div>
+                                    <div class="stat-value" id="pressure">1013 hPa</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Weather Forecast -->
+                <div class="weather-card fade-in" style="animation-delay: 0.1s">
+                    <div class="card-header">
+                        <h2 class="card-title">
+                            <i class="fas fa-calendar-alt"></i>
+                            <span data-lang="forecast">24-Hour Forecast</span>
+                        </h2>
+                    </div>
+                    
+                    <div class="forecast-container">
+                        <div class="forecast-grid" id="forecastGrid">
+                            <!-- Forecast cards will be generated here -->
                         </div>
                     </div>
                 </div>
             </div>
-        </div>
-        
-        <!-- ADVICE SECTION -->
-        <div class="advice-section">
-            <div class="advice-content" id="farmingAdvice">
-                <div style="text-align: center; color: #666; padding: 20px;">
-                    <div style="font-size: 2em; margin-bottom: 10px;">🌱</div>
-                    <div style="font-weight: bold; color: #2E7D32; margin-bottom: 10px;">Welcome to AgriMate Zambia!</div>
-                    <div>Click "Get Weather & Advice" to start</div>
+            
+            <!-- AI Farming Advice -->
+            <div class="ai-advice-section fade-in" style="animation-delay: 0.2s">
+                <div class="ai-header">
+                    <div class="ai-title">
+                        <div class="ai-icon">🤖</div>
+                        <div>
+                            <h2 data-lang="aiAdvice">AI Farming Assistant</h2>
+                            <p data-lang="aiSubtitle">Personalized recommendations for your farm</p>
+                        </div>
+                    </div>
+                    <button class="lang-btn" onclick="generateAIAdvice()" style="background: var(--secondary);">
+                        <i class="fas fa-robot"></i>
+                        <span data-lang="generateAdvice">Generate Advice</span>
+                    </button>
+                </div>
+                
+                <div class="advice-tabs">
+                    <button class="advice-tab active" onclick="showAdviceCategory('planting')" data-lang="plantingTab">🌱 Planting</button>
+                    <button class="advice-tab" onclick="showAdviceCategory('irrigation')" data-lang="irrigationTab">💧 Irrigation</button>
+                    <button class="advice-tab" onclick="showAdviceCategory('pests')" data-lang="pestsTab">🐛 Pests & Diseases</button>
+                    <button class="advice-tab" onclick="showAdviceCategory('harvest')" data-lang="harvestTab">📦 Harvest & Storage</button>
+                </div>
+                
+                <div class="advice-content" id="adviceContent">
+                    <div class="advice-category" id="plantingAdvice">
+                        <h3 class="category-title">
+                            <i class="fas fa-seedling"></i>
+                            <span data-lang="plantingTitle">Planting Recommendations</span>
+                        </h3>
+                        <div class="recommendation-list">
+                            <div class="recommendation-item">
+                                <i class="fas fa-check-circle" style="color: var(--success);"></i>
+                                <div>
+                                    <strong data-lang="plantingTip1">Best crops for current season:</strong>
+                                    <span data-lang="plantingTip1Desc">Maize, Beans, Vegetables</span>
+                                </div>
+                            </div>
+                            <div class="recommendation-item">
+                                <i class="fas fa-check-circle" style="color: var(--success);"></i>
+                                <div>
+                                    <strong data-lang="plantingTip2">Optimal planting time:</strong>
+                                    <span data-lang="plantingTip2Desc">Early morning (6-8 AM)</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
             
-            <button class="advice-btn" onclick="generateAdvice()">
-                🤖 Get AI Farming Advice
-            </button>
-        </div>
-        
-        <!-- FEATURES -->
-        <div class="features-section">
-            <div style="font-weight: bold; color: #1976D2; margin-bottom: 15px; font-size: 1.2em;">⚡ Quick Tools</div>
-            
-            <div class="features-grid">
-                <div class="feature-card" onclick="openTool('diagnose')">
-                    <div style="font-size: 2em; margin-bottom: 10px;">🩺</div>
-                    <div style="font-weight: bold; color: #2E7D32;">Crop Health</div>
+            <!-- Features Grid -->
+            <div class="features-section fade-in" style="animation-delay: 0.3s">
+                <div class="section-header">
+                    <h2 class="section-title" data-lang="features">Smart Farming Tools</h2>
+                    <button class="lang-btn" onclick="showAllFeatures()" style="background: var(--accent);">
+                        <i class="fas fa-eye"></i>
+                        <span data-lang="viewAll">View All</span>
+                    </button>
                 </div>
                 
-                <div class="feature-card" onclick="openTool('calendar')">
-                    <div style="font-size: 2em; margin-bottom: 10px;">📅</div>
-                    <div style="font-weight: bold; color: #2E7D32;">Planting Calendar</div>
-                </div>
-                
-                <div class="feature-card" onclick="openTool('irrigation')">
-                    <div style="font-size: 2em; margin-bottom: 10px;">💧</div>
-                    <div style="font-weight: bold; color: #2E7D32;">Irrigation Plan</div>
-                </div>
-                
-                <div class="feature-card" onclick="openTool('market')">
-                    <div style="font-size: 2em; margin-bottom: 10px;">💰</div>
-                    <div style="font-weight: bold; color: #2E7D32;">Market Prices</div>
+                <div class="features-grid">
+                    <!-- Feature 1: Crop Health Scanner -->
+                    <div class="feature-card" onclick="openFeature('scanner')">
+                        <div class="feature-header">
+                            <div class="feature-icon">🩺</div>
+                            <div>
+                                <h3 class="feature-title" data-lang="cropHealth">Crop Health Scanner</h3>
+                                <div class="feature-badge">AI-Powered</div>
+                            </div>
+                        </div>
+                        <p class="feature-desc" data-lang="cropHealthDesc">
+                            Scan crops with your camera to detect diseases, pests, and nutrient deficiencies using artificial intelligence.
+                        </p>
+                        <button class="lang-btn" style="width: 100%; background: var(--primary);">
+                            <i class="fas fa-camera"></i>
+                            <span data-lang="scanNow">Scan Now</span>
+                        </button>
+                    </div>
+                    
+                    <!-- Feature 2: Smart Irrigation -->
+                    <div class="feature-card" onclick="openFeature('irrigation')">
+                        <div class="feature-header">
+                            <div class="feature-icon">💧</div>
+                            <div>
+                                <h3 class="feature-title" data-lang="smartIrrigation">Smart Irrigation</h3>
+                                <div class="feature-badge">Water Saving</div>
+                            </div>
+                        </div>
+                        <p class="feature-desc" data-lang="irrigationDesc">
+                            Automated irrigation scheduling based on weather forecasts, soil moisture, and crop water requirements.
+                        </p>
+                        <button class="lang-btn" style="width: 100%; background: var(--accent);">
+                            <i class="fas fa-tint"></i>
+                            <span data-lang="planIrrigation">Plan Irrigation</span>
+                        </button>
+                    </div>
+                    
+                    <!-- Feature 3: Market Intelligence -->
+                    <div class="feature-card" onclick="openFeature('market')">
+                        <div class="feature-header">
+                            <div class="feature-icon">💰</div>
+                            <div>
+                                <h3 class="feature-title" data-lang="marketIntel">Market Intelligence</h3>
+                                <div class="feature-badge">Live Prices</div>
+                            </div>
+                        </div>
+                        <p class="feature-desc" data-lang="marketDesc">
+                            Real-time crop prices, demand forecasts, and market trends across Zambian agricultural markets.
+                        </p>
+                        <button class="lang-btn" style="width: 100%; background: var(--secondary);">
+                            <i class="fas fa-chart-line"></i>
+                            <span data-lang="viewPrices">View Prices</span>
+                        </button>
+                    </div>
                 </div>
             </div>
-        </div>
+        </main>
         
-        <!-- FOOTER -->
-        <div style="text-align: center; padding: 25px 20px; color: #666; background: #f8fdf8; border-top: 1px solid #e0e0e0;">
-            <div>🌱 AgriMate Zambia - Free Farming Assistant</div>
-            <div style="margin-top: 8px; color: #888; font-size: 0.85em;">
-                Add to home screen • Works offline • 100% Free
+        <!-- Bottom Navigation -->
+        <nav class="bottom-nav">
+            <div class="nav-grid">
+                <a href="#" class="nav-item active">
+                    <i class="fas fa-home nav-icon"></i>
+                    <span class="nav-label" data-lang="home">Home</span>
+                </a>
+                <a href="#" class="nav-item" onclick="openFeature('weather')">
+                    <i class="fas fa-cloud-sun nav-icon"></i>
+                    <span class="nav-label" data-lang="weather">Weather</span>
+                </a>
+                <a href="#" class="nav-item" onclick="openFeature('advice')">
+                    <i class="fas fa-robot nav-icon"></i>
+                    <span class="nav-label" data-lang="advice">AI Advice</span>
+                </a>
+                <a href="#" class="nav-item" onclick="openFeature('tools')">
+                    <i class="fas fa-tools nav-icon"></i>
+                    <span class="nav-label" data-lang="tools">Tools</span>
+                </a>
+                <a href="#" class="nav-item" onclick="openFeature('profile')">
+                    <i class="fas fa-user nav-icon"></i>
+                    <span class="nav-label" data-lang="profile">Profile</span>
+                </a>
             </div>
-        </div>
+        </nav>
     </div>
 
     <script>
-        // Weather data for Zambian cities
-        const weatherData = {
-            'Lusaka': { temp: 26, condition: 'Sunny', humidity: 65, wind: 12, rain: 0, feels: 27 },
-            'Ndola': { temp: 24, condition: 'Partly Cloudy', humidity: 70, wind: 10, rain: 1, feels: 25 },
-            'Kitwe': { temp: 23, condition: 'Cloudy', humidity: 68, wind: 11, rain: 2, feels: 24 },
-            'Livingstone': { temp: 28, condition: 'Clear', humidity: 60, wind: 15, rain: 0, feels: 29 },
-            'Chipata': { temp: 27, condition: 'Sunny', humidity: 62, wind: 13, rain: 0, feels: 28 },
-            'Solwezi': { temp: 22, condition: 'Rainy', humidity: 72, wind: 9, rain: 3, feels: 23 },
-            'Mongu': { temp: 29, condition: 'Hot', humidity: 58, wind: 16, rain: 0, feels: 31 },
-            'Kasama': { temp: 23, condition: 'Cloudy', humidity: 71, wind: 10, rain: 2, feels: 24 }
-        };
-        
-        // Farming advice
-        const farmingAdvice = {
-            'Lusaka': 'Perfect for planting maize and vegetables. Water at 6AM. Watch for pests.',
-            'Ndola': 'Good for coffee and flowers. Moderate watering needed.',
-            'Kitwe': 'Ideal for vegetables. Requires regular irrigation.',
-            'Livingstone': 'Hot weather - plant drought-resistant crops. Water twice daily.',
-            'Chipata': 'Excellent for tobacco. Full sun exposure needed.',
-            'Solwezi': 'Rainy season - focus on drainage. Delay planting if heavy rain.',
-            'Mongu': 'Hot and dry - water early morning. Plant sorghum and millet.',
-            'Kasama': 'Cool climate - good for tea and coffee.'
-        };
-        
-        function getWeather() {
-            const select = document.getElementById('locationSelect');
-            const city = select.value;
-            const data = weatherData[city];
+        // ====================
+        // MULTILINGUAL SUPPORT
+        // ====================
+        const translations = {
+            en: {
+                // App
+                appTitle: "AgriMate Zambia Pro",
+                appSubtitle: "AI-Powered Smart Farming",
+                
+                // Weather
+                currentWeather: "Current Weather",
+                forecast: "24-Hour Forecast",
+                feelsLike: "Feels like",
+                humidity: "Humidity",
+                wind: "Wind",
+                rainfall: "Rainfall",
+                pressure: "Pressure",
+                
+                // Locations
+                lusaka: "📍 Lusaka (Capital)",
+                ndola: "📍 Ndola (Copperbelt)",
+                kitwe: "📍 Kitwe",
+                livingstone: "📍 Livingstone",
+                chipata: "📍 Chipata (Eastern)",
+                solwezi: "📍 Solwezi",
+                mongu: "📍 Mongu (Western)",
+                kasama: "📍 Kasama (Northern)",
+                
+                // AI Advice
+                aiAdvice: "AI Farming Assistant",
+                aiSubtitle: "Personalized recommendations for your farm",
+                generateAdvice: "Generate Advice",
+                plantingTab: "🌱 Planting",
+                irrigationTab: "💧 Irrigation",
+                pestsTab: "🐛 Pests & Diseases",
+                harvestTab: "📦 Harvest & Storage",
+                plantingTitle: "Planting Recommendations",
+                plantingTip1: "Best crops for current season:",
+                plantingTip1Desc: "Maize, Beans, Vegetables",
+                plantingTip2: "Optimal planting time:",
+                plantingTip2Desc: "Early morning (6-8 AM)",
+                
+                // Features
+                features: "Smart Farming Tools",
+                viewAll: "View All",
+                cropHealth: "Crop Health Scanner",
+                cropHealthDesc: "Scan crops with your camera to detect diseases, pests, and nutrient deficiencies using artificial intelligence.",
+                scanNow: "Scan Now",
+                smartIrrigation: "Smart Irrigation",
+                irrigationDesc: "Automated irrigation scheduling based on weather forecasts, soil moisture, and crop water requirements.",
+                planIrrigation: "Plan Irrigation",
+                marketIntel: "Market Intelligence",
+                marketDesc: "Real-time crop prices, demand forecasts, and market trends across Zambian agricultural markets.",
+                viewPrices: "View Prices",
+                
+                // Navigation
+                home: "Home",
+                weather: "Weather",
+                advice: "AI Advice",
+                tools: "Tools",
+                profile: "Profile"
+            },
             
-            // Update display
-            document.getElementById('locationName').textContent = city + ', Zambia';
+            bem: {
+                // App
+                appTitle: "AgriMate Zambia Pro",
+                appSubtitle: "AI Ukulima Ubwanko",
+                
+                // Weather
+                currentWeather: "Imyele Yamuchinshi",
+                forecast: "Ifuleeshi ya Masauso 24",
+                feelsLike: "Ifintu fya",
+                humidity: "Ubushishi",
+                wind: "Umpepo",
+                rainfall: "Ifula",
+                pressure: "Ukutina",
+                
+                // Locations
+                lusaka: "📍 Lusaka (Ishitalo)",
+                ndola: "📍 Ndola (Copperbelt)",
+                kitwe: "📍 Kitwe",
+                livingstone: "📍 Livingstone",
+                chipata: "📍 Chipata (Kumausa)",
+                solwezi: "📍 Solwezi",
+                mongu: "📍 Mongu (Kumunena)",
+                kasama: "📍 Kasama (Kumulunga)",
+                
+                // AI Advice
+                aiAdvice: "AI Ukupanga Ukulima",
+                aiSubtitle: "Ifyasuminisha pa kumulandu wenu",
+                generateAdvice: "Panga Ifyasuminisha",
+                plantingTab: "🌱 Ukuswamo",
+                irrigationTab: "💧 Ukuswepa",
+                pestsTab: "🐛 Ifipuka & Ifyafumo",
+                harvestTab: "📦 Ukupela & Ukubika",
+                plantingTitle: "Ifyasuminisha fya Ukuswamo",
+                plantingTip1: "Ifya mbuto ifisuma mu myele:",
+                plantingTip1Desc: "Icibemba, Indende, Ifya kulya",
+                plantingTip2: "Ishita ifisuma ya kuswamo:",
+                plantingTip2Desc: "Mucelo (6-8 AM)",
+                
+                // Features
+                features: "Ifya Bukopo Bwa Kulima",
+                viewAll: "Lolesha Ifyonse",
+                cropHealth: "Ukukonkeshya Ifya Mbuto",
+                cropHealthDesc: "Konkeshya ifya mbuto ne kamela ukupanga ukumona ifipuka, ifyafumo, no kukosa ubunono.",
+                scanNow: "Konkeshya Nomba",
+                smartIrrigation: "Ukuswepa Ubwanko",
+                irrigationDesc: "Ukuswepa ifikala kufuma ku myele, ubushishi bwa mushili, no kufwaya amenshi a mbuto.",
+                planIrrigation: "Panga Ukuswepa",
+                marketIntel: "Ukumanya Amasoko",
+                marketDesc: "Amapela ya nomba, ifuleeshi ya kufwaya, no kufinta kwa masoko mu Zambia.",
+                viewPrices: "Lolesha Amapela",
+                
+                // Navigation
+                home: "Imino",
+                weather: "Imyele",
+                advice: "Ifyasuminisha fya AI",
+                tools: "Ifya Bukopo",
+                profile: "Icinso"
+            },
+            
+            nya: {
+                // App
+                appTitle: "AgriMate Zambia Pro",
+                appSubtitle: "AI Kulima Mwachangu",
+                
+                // Weather
+                currentWeather: "Nyengo Yanu",
+                forecast: "Makoledwe a Masana 24",
+                feelsLike: "Zikuoneka ngati",
+                humidity: "Chinyezi",
+                wind: "Mphepo",
+                rainfall: "Mvula",
+                pressure: "Mfuti",
+                
+                // Locations
+                lusaka: "📍 Lusaka (Mtsogoleri)",
+                ndola: "📍 Ndola (Copperbelt)",
+                kitwe: "📍 Kitwe",
+                livingstone: "📍 Livingstone",
+                chipata: "📍 Chipata (Kummawa)",
+                solwezi: "📍 Solwezi",
+                mongu: "📍 Mongu (Kummwera)",
+                kasama: "📍 Kasama (Kumpoto)",
+                
+                // AI Advice
+                aiAdvice: "AI Wophunzira Zokhudza Kulima",
+                aiSubtitle: "Malangizo okhudza minda yanu",
+                generateAdvice: "Panga Malangizo",
+                plantingTab: "🌱 Kukolera",
+                irrigationTab: "💧 Kutaya Madzi",
+                pestsTab: "🐛 Tizilombo & Matenda",
+                harvestTab: "📦 Kukola & Kusunga",
+                plantingTitle: "Malangizo Okukolera",
+                plantingTip1: "Mbeu zabwino pazaka panu:",
+                plantingTip1Desc: "Mimba, Nyemba, Masamba",
+                plantingTip2: "Nthawi yabwino yokolera:",
+                plantingTip2Desc: "M'mawa (6-8 AM)",
+                
+                // Features
+                features: "Zida Zaulimi",
+                viewAll: "Onani Zonse",
+                cropHealth: "Kuwona Mbeu",
+                cropHealthDesc: "Wonani mbeu ndi kamera kuti muwone matenda, tizilombo, ndi kusowa kwa zakudya.",
+                scanNow: "Wonani Tsopano",
+                smartIrrigation: "Kutaya Madzi Mwachangu",
+                irrigationDesc: "Kutaya madzi malinga ndi makoledwe a nyengo, chinyezi cha dothi, ndi kufunika kwa madzi a mbeu.",
+                planIrrigation: "Konzani Kutaya Madzi",
+                marketIntel: "Kudziwa Misika",
+                marketDesc: "Mitengo yamakono, kufuna kwamakono, ndi kusintha kwa misika mu Zambia.",
+                viewPrices: "Onani Mitengo",
+                
+                // Navigation
+                home: "Kunyumba",
+                weather: "Nyengo",
+                advice: "Malangizo a AI",
+                tools: "Zida",
+                profile: "Mbiri"
+            }
+        };
+
+        // ====================
+        // WEATHER DATA
+        // ====================
+        const weatherData = {
+            Lusaka: {
+                temp: 26,
+                condition: "Sunny",
+                feelsLike: 28,
+                humidity: 65,
+                wind: 12,
+                rain: 0,
+                pressure: 1013,
+                forecast: [
+                    { time: "Now", temp: 26, icon: "☀️", condition: "Sunny" },
+                    { time: "14:00", temp: 28, icon: "☀️", condition: "Sunny" },
+                    { time: "16:00", temp: 27, icon: "⛅", condition: "Partly Cloudy" },
+                    { time: "18:00", temp: 24, icon: "🌤️", condition: "Clear" },
+                    { time: "20:00", temp: 22, icon: "🌙", condition: "Clear" },
+                    { time: "22:00", temp: 21, icon: "🌙", condition: "Clear" }
+                ]
+            },
+            Ndola: {
+                temp: 24,
+                condition: "Partly Cloudy",
+                feelsLike: 25,
+                humidity: 70,
+                wind: 10,
+                rain: 1,
+                pressure: 1012,
+                forecast: [
+                    { time: "Now", temp: 24, icon: "⛅", condition: "Partly Cloudy" },
+                    { time: "14:00", temp: 25, icon: "⛅", condition: "Partly Cloudy" },
+                    { time: "16:00", temp: 24, icon: "☁️", condition: "Cloudy" },
+                    { time: "18:00", temp: 22, icon: "🌧️", condition: "Light Rain" },
+                    { time: "20:00", temp: 21, icon: "🌧️", condition: "Light Rain" },
+                    { time: "22:00", temp: 20, icon: "☁️", condition: "Cloudy" }
+                ]
+            },
+            Kitwe: {
+                temp: 23,
+                condition: "Cloudy",
+                feelsLike: 24,
+                humidity: 68,
+                wind: 11,
+                rain: 2,
+                pressure: 1011,
+                forecast: [
+                    { time: "Now", temp: 23, icon: "☁️", condition: "Cloudy" },
+                    { time: "14:00", temp: 24, icon: "☁️", condition: "Cloudy" },
+                    { time: "16:00", temp: 23, icon: "🌧️", condition: "Light Rain" },
+                    { time: "18:00", temp: 22, icon: "🌧️", condition: "Rain" },
+                    { time: "20:00", temp: 21, icon: "🌧️", condition: "Rain" },
+                    { time: "22:00", temp: 20, icon: "☁️", condition: "Cloudy" }
+                ]
+            }
+        };
+
+        // ====================
+        // AI ADVICE DATA
+        // ====================
+        const aiAdvice = {
+            planting: {
+                en: [
+                    "🌾 Plant maize, beans, and vegetables this season",
+                    "⏰ Optimal planting time: Early morning (6-8 AM)",
+                    "🌱 Use certified seeds for better yield",
+                    "📏 Maintain proper spacing (75cm between rows)",
+                    "🌿 Apply organic fertilizer before planting"
+                ],
+                bem: [
+                    "🌾 Swamani icibemba, indende, nafya kulya mu myele iyi",
+                    "⏰ Ishita ifisuma: Mucelo (6-8 AM)",
+                    "🌱 Eesha imbuto ishilikile ukupanga umupela uwamina",
+                    "📏 Eesha ukwali ukusuma (75cm pakati pa mitanda)",
+                    "🌿 Eesha ifyakwipusha mbele ya kuswamo"
+                ],
+                nya: [
+                    "🌾 Kolani mimba, nyemba, ndi masamba m'chaka chino",
+                    "⏰ Nthawi yabwino yokolera: M'mawa (6-8 AM)",
+                    "🌱 Gwiritsani ntchito mbeu zovomerezeka",
+                    "📏 Sungani mtunda wabwino (75cm pakati pa mizere)",
+                    "🌿 Lowetsani fetereza yakuthupi musanakolere"
+                ]
+            },
+            irrigation: {
+                en: [
+                    "💧 Water early morning to reduce evaporation",
+                    "⏱️ Adjust irrigation based on rainfall",
+                    "🌦️ Skip watering if rain exceeds 10mm",
+                    "💦 Use drip irrigation for water conservation",
+                    "📊 Monitor soil moisture regularly"
+                ],
+                bem: [
+                    "💧 Swepani mucelo ukutoba ukupwa kwa menshi",
+                    "⏱️ Chinjani ukuswepa kufuma ku ifula",
+                    "🌦️ Lekani ukuswepa nangu ifula ila 10mm",
+                    "💦 Eesha ukuswepa kwa menshi ukutunka",
+                    "📊 Konkelesha ubushishi bwa mushili panshi"
+                ],
+                nya: [
+                    "💧 Tayani madzi m'mawa kuti asawachuluke",
+                    "⏱️ Sinthani kutaya madzi kutengera mvula",
+                    "🌦️ Lekani kutaya madzi ngati mvula yadutsa 10mm",
+                    "💦 Gwiritsani ntchito mtedza wamadzi",
+                    "📊 Yang'anani chinyezi cha dothi nthawi zonse"
+                ]
+            },
+            pests: {
+                en: [
+                    "🐛 Monitor for armyworm activity weekly",
+                    "🌿 Use neem extract as natural pesticide",
+                    "🦅 Attract birds for natural pest control",
+                    "🔍 Check underside of leaves regularly",
+                    "💊 Rotate pesticides to prevent resistance"
+                ],
+                bem: [
+                    "🐛 Konkelesha ifipuka fya armyworm inshiku",
+                    "🌿 Eesha ineem extract nga cipuka cakulaya",
+                    "🦅 Cenga inyoni ukulaya ifipuka",
+                    "🔍 Konkelesha panshi pa mashamba panshi",
+                    "💊 Chinjani ifyakulaya ifipuka ukutoba ukubika"
+                ],
+                nya: [
+                    "🐛 Yang'anani tizilombo tsiku lililonse",
+                    "🌿 Gwiritsani ntchito mtedza wa neem",
+                    "🦅 Konzani mbidzi kuti zidye tizilombo",
+                    "🔍 Yang'anani pansipepala nthawi zonse",
+                    "💊 Sinthani mankhwala kuti tizilombo tisabweze"
+                ]
+            },
+            harvest: {
+                en: [
+                    "📦 Harvest in early morning for better quality",
+                    "🌾 Store grains at 13% moisture content",
+                    "🚜 Use proper equipment to reduce losses",
+                    "📅 Plan harvest based on weather forecast",
+                    "💸 Time harvest with market demand"
+                ],
+                bem: [
+                    "📦 Pelani mucelo ukupanga ubusuma",
+                    "🌾 Bika ifya mbuto mu 13% ubushishi",
+                    "🚜 Eesha ifya bukopo ukutoba ukufwafwa",
+                    "📅 Panga ukupela kufuma ku ifuleeshi ya myele",
+                    "💸 Ishita ya kupela ne kufwaya kwa soko"
+                ],
+                nya: [
+                    "📦 Kolani m'mawa kuti zikhale zabwino",
+                    "🌾 Sungani mbeu mu 13% chinyezi",
+                    "🚜 Gwiritsani ntchito zida zabwino",
+                    "📅 Konzani kukola kutengera nyengo",
+                    "💸 Nthawi yokola ndi kufuna kwa misika"
+                ]
+            }
+        };
+
+        // ====================
+        // APP STATE
+        // ====================
+        let currentLanguage = 'en';
+        let currentLocation = 'Lusaka';
+        let currentTheme = 'light';
+
+        // ====================
+        // INITIALIZATION
+        // ====================
+        document.addEventListener('DOMContentLoaded', function() {
+            // Load saved preferences
+            const savedLang = localStorage.getItem('agrimate_lang') || 'en';
+            const savedTheme = localStorage.getItem('agrimate_theme') || 'light';
+            
+            // Apply saved preferences
+            changeLanguage(savedLang);
+            setTheme(savedTheme);
+            
+            // Initialize weather
+            updateWeather();
+            
+            // Initialize forecast
+            updateForecast();
+            
+            // Show welcome notification
+            setTimeout(() => {
+                showNotification(currentLanguage === 'en' ? "Welcome to AgriMate Zambia Pro!" :
+                                currentLanguage === 'bem' ? "Mwaiseni ku AgriMate Zambia Pro!" :
+                                "Takulandilani ku AgriMate Zambia Pro!");
+            }, 1000);
+            
+            // Setup service worker for PWA
+            if ('serviceWorker' in navigator) {
+                navigator.serviceWorker.register('/sw.js')
+                    .then(reg => console.log('Service Worker registered'))
+                    .catch(err => console.log('Service Worker registration failed:', err));
+            }
+        });
+
+        // ====================
+        // LANGUAGE FUNCTIONS
+        // ====================
+        function toggleLanguageDropdown() {
+            const dropdown = document.getElementById('languageDropdown');
+            dropdown.classList.toggle('show');
+        }
+
+        function changeLanguage(lang) {
+            currentLanguage = lang;
+            localStorage.setItem('agrimate_lang', lang);
+            
+            // Update all text elements
+            document.querySelectorAll('[data-lang]').forEach(element => {
+                const key = element.getAttribute('data-lang');
+                if (translations[lang][key]) {
+                    element.textContent = translations[lang][key];
+                }
+            });
+            
+            // Update current language display
+            document.getElementById('currentLang').textContent = 
+                lang === 'en' ? 'English' :
+                lang === 'bem' ? 'Bemba' : 'Nyanja';
+            
+            // Update dropdown active state
+            document.querySelectorAll('.lang-option').forEach(option => {
+                option.classList.remove('active');
+            });
+            document.querySelector(`.lang-option[onclick="changeLanguage('${lang}')"]`).classList.add('active');
+            
+            // Close dropdown
+            document.getElementById('languageDropdown').classList.remove('show');
+            
+            // Update AI advice
+            updateAdviceDisplay();
+            
+            showNotification(
+                lang === 'en' ? "Language changed to English" :
+                lang === 'bem' ? "Ululimi lwasinthika ku Chibemba" :
+                "Chilankhulo chasinthidwa ku Chichewa"
+            );
+        }
+
+        // ====================
+        // THEME FUNCTIONS
+        // ====================
+        function toggleTheme() {
+            const newTheme = currentTheme === 'light' ? 'dark' : 'light';
+            setTheme(newTheme);
+        }
+
+        function setTheme(theme) {
+            currentTheme = theme;
+            document.documentElement.setAttribute('data-theme', theme);
+            localStorage.setItem('agrimate_theme', theme);
+            document.getElementById('themeSwitch').checked = theme === 'dark';
+        }
+
+        // ====================
+        // WEATHER FUNCTIONS
+        // ====================
+        function updateWeather() {
+            const location = document.getElementById('locationSelect').value;
+            currentLocation = location;
+            const data = weatherData[location] || weatherData.Lusaka;
+            
+            // Update current weather
             document.getElementById('currentTemp').textContent = data.temp;
             document.getElementById('weatherCondition').textContent = data.condition;
-            document.getElementById('humidity').textContent = data.humidity + '%';
-            document.getElementById('windSpeed').textContent = data.wind + ' km/h';
-            document.getElementById('rainfall').textContent = data.rain + ' mm';
-            document.getElementById('feelsLike').textContent = data.feels + '°C';
+            document.getElementById('feelsLike').textContent = data.feelsLike + "°C";
+            document.getElementById('humidity').textContent = data.humidity + "%";
+            document.getElementById('windSpeed').textContent = data.wind + " km/h";
+            document.getElementById('rainfall').textContent = data.rain + " mm";
+            document.getElementById('pressure').textContent = data.pressure + " hPa";
             
-            // Store current city for advice
-            window.currentCity = city;
+            // Update forecast
+            updateForecast();
+            
+            showNotification(
+                currentLanguage === 'en' ? `Weather updated for ${location}` :
+                currentLanguage === 'bem' ? `Imyele yasinthika pa ${location}` :
+                `Nyengo yasinthidwa pa ${location}`
+            );
         }
-        
-        function generateAdvice() {
-            if (!window.currentCity) {
-                alert('Please select a city first');
-                return;
-            }
+
+        function updateForecast() {
+            const data = weatherData[currentLocation] || weatherData.Lusaka;
+            const forecastGrid = document.getElementById('forecastGrid');
+            forecastGrid.innerHTML = '';
             
-            const advice = farmingAdvice[window.currentCity];
-            document.getElementById('farmingAdvice').innerHTML = `
-                <div style="color: #2E7D32;">
-                    <div style="font-weight: bold; margin-bottom: 10px; font-size: 1.2em;">🤖 AI Farming Advice for ${window.currentCity}</div>
-                    <div style="line-height: 1.6; margin-bottom: 15px;">${advice}</div>
-                    <div style="background: #f5f5f5; padding: 15px; border-radius: 10px; margin-top: 15px;">
-                        <div style="font-weight: bold; margin-bottom: 10px;">🌽 Recommended Crops:</div>
-                        <div>• Maize (staple crop)</div>
-                        <div>• Vegetables (tomatoes, cabbage)</div>
-                        <div>• Legumes (groundnuts, beans)</div>
+            data.forecast.forEach(hour => {
+                forecastGrid.innerHTML += `
+                    <div class="forecast-card">
+                        <div class="forecast-time">${hour.time}</div>
+                        <div class="forecast-icon">${hour.icon}</div>
+                        <div class="forecast-temp">${hour.temp}°C</div>
+                    </div>
+                `;
+            });
+        }
+
+        // ====================
+        // AI ADVICE FUNCTIONS
+        // ====================
+        function generateAIAdvice() {
+            showLoading(true);
+            
+            setTimeout(() => {
+                updateAdviceDisplay();
+                showLoading(false);
+                
+                showNotification(
+                    currentLanguage === 'en' ? "AI Advice Generated!" :
+                    currentLanguage === 'bem' ? "Ifyasuminisha fya AI fyapangwa!" :
+                    "Malangizo a AI apangidwa!"
+                );
+            }, 1500);
+        }
+
+        function showAdviceCategory(category) {
+            // Update active tab
+            document.querySelectorAll('.advice-tab').forEach(tab => {
+                tab.classList.remove('active');
+            });
+            event.target.classList.add('active');
+            
+            // Update advice content
+            updateAdviceCategory(category);
+        }
+
+        function updateAdviceCategory(category) {
+            const adviceContent = document.getElementById('adviceContent');
+            const adviceList = aiAdvice[category][currentLanguage];
+            
+            let adviceHTML = `
+                <div class="advice-category" id="${category}Advice">
+                    <h3 class="category-title">
+                        <i class="fas fa-${getCategoryIcon(category)}"></i>
+                        <span>${getCategoryTitle(category)}</span>
+                    </h3>
+                    <div class="recommendation-list">
+            `;
+            
+            adviceList.forEach(item => {
+                adviceHTML += `
+                    <div class="recommendation-item">
+                        <i class="fas fa-check-circle" style="color: var(--success);"></i>
+                        <div>${item}</div>
+                    </div>
+                `;
+            });
+            
+            adviceHTML += `
                     </div>
                 </div>
             `;
+            
+            adviceContent.innerHTML = adviceHTML;
         }
-        
-        function openTool(tool) {
-            const toolNames = {
-                'diagnose': 'Crop Health Scanner',
-                'calendar': 'Planting Calendar', 
-                'irrigation': 'Irrigation Planner',
-                'market': 'Market Prices'
+
+        function updateAdviceDisplay() {
+            updateAdviceCategory('planting');
+        }
+
+        function getCategoryIcon(category) {
+            const icons = {
+                planting: 'seedling',
+                irrigation: 'tint',
+                pests: 'bug',
+                harvest: 'box'
+            };
+            return icons[category] || 'seedling';
+        }
+
+        function getCategoryTitle(category) {
+            const titles = {
+                en: {
+                    planting: 'Planting Recommendations',
+                    irrigation: 'Irrigation Strategy',
+                    pests: 'Pest Management',
+                    harvest: 'Harvest Planning'
+                },
+                bem: {
+                    planting: 'Ifyasuminisha fya Ukuswamo',
+                    irrigation: 'Ubukopo bwa Ukuswepa',
+                    pests: 'Ukulaya Ifipuka',
+                    harvest: 'Ukupanga Ukupela'
+                },
+                nya: {
+                    planting: 'Malangizo Okukolera',
+                    irrigation: 'Njira Yotaya Madzi',
+                    pests: 'Kulimbana ndi Tizilombo',
+                    harvest: 'Kukonza Kukola'
+                }
+            };
+            return titles[currentLanguage][category] || titles.en[category];
+        }
+
+        // ====================
+        // FEATURE FUNCTIONS
+        // ====================
+        function openFeature(feature) {
+            const featureNames = {
+                scanner: 'Crop Health Scanner',
+                irrigation: 'Smart Irrigation',
+                market: 'Market Intelligence',
+                weather: 'Weather Forecast',
+                advice: 'AI Advice',
+                tools: 'Farming Tools',
+                profile: 'Farmer Profile'
             };
             
-            document.getElementById('farmingAdvice').innerHTML = `
-                <div style="color: #2E7D32;">
-                    <div style="font-weight: bold; margin-bottom: 10px; font-size: 1.2em;">${toolNames[tool]}</div>
-                    <div style="line-height: 1.6; margin-bottom: 15px;">
-                        This tool helps Zambian farmers with ${toolNames[tool].toLowerCase()}.
-                    </div>
-                    <div style="background: #f5f5f5; padding: 15px; border-radius: 10px;">
-                        <div style="font-weight: bold; margin-bottom: 5px;">💡 Coming Soon:</div>
-                        <div>Complete ${toolNames[tool]} with AI features</div>
-                    </div>
-                </div>
-            `;
+            showNotification(
+                currentLanguage === 'en' ? `Opening ${featureNames[feature]}...` :
+                currentLanguage === 'bem' ? `Ukutwala ${featureNames[feature]}...` :
+                `Kutsegula ${featureNames[feature]}...`
+            );
+            
+            // Simulate loading
+            showLoading(true);
+            setTimeout(() => showLoading(false), 1000);
         }
-        
-        // Initialize with Lusaka weather
-        getWeather();
+
+        function showAllFeatures() {
+            showNotification(
+                currentLanguage === 'en' ? "Showing all farming tools" :
+                currentLanguage === 'bem' ? "Ukulolesha ifya bukopo bonse" :
+                "Kuwonetsa zida zonse zokhudza kulima"
+            );
+        }
+
+        // ====================
+        // UI HELPER FUNCTIONS
+        // ====================
+        function showLoading(show) {
+            document.getElementById('loading').classList.toggle('show', show);
+        }
+
+        function showNotification(message) {
+            const notification = document.getElementById('notification');
+            document.getElementById('notificationMessage').textContent = message;
+            notification.classList.add('show');
+            
+            setTimeout(() => {
+                notification.classList.remove('show');
+            }, 3000);
+        }
+
+        // ====================
+        // OFFLINE DETECTION
+        // ====================
+        window.addEventListener('online', () => {
+            showNotification(
+                currentLanguage === 'en' ? "Back online! Syncing data..." :
+                currentLanguage === 'bem' ? "Mwaiseni online! Ukusunga data..." :
+                "Bwerani pa intaneti! Kukonza data..."
+            );
+        });
+
+        window.addEventListener('offline', () => {
+            showNotification(
+                currentLanguage === 'en' ? "You're offline. Using cached data." :
+                currentLanguage === 'bem' ? "Mwaiseni offline. Tukwasha data yakale." :
+                "Muli kunja. Tikugwiritsa ntchito data yakale."
+            );
+        });
+
+        // ====================
+        // PWA INSTALL PROMPT
+        // ====================
+        let deferredPrompt;
+        window.addEventListener('beforeinstallprompt', (e) => {
+            e.preventDefault();
+            deferredPrompt = e;
+            
+            setTimeout(() => {
+                showNotification(
+                    currentLanguage === 'en' ? "Install AgriMate for quick access!" :
+                    currentLanguage === 'bem' ? "Install AgriMate ukuti mwafikepo!" :
+                    "Khonzerani AgriMate kuti mugwiritse ntchito mwachangu!"
+                );
+            }, 5000);
+        });
+
+        // ====================
+        // ANIMATIONS
+        // ====================
+        // Add fade-in animation to elements
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('fade-in');
+                }
+            });
+        }, { threshold: 0.1 });
+
+        document.querySelectorAll('.weather-card, .ai-advice-section, .feature-card').forEach(el => {
+            observer.observe(el);
+        });
     </script>
 </body>
 </html>
